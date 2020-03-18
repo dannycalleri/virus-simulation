@@ -1,6 +1,12 @@
 import { Container } from "pixi.js";
 import { Body } from "matter-js";
 
+export interface Circle {
+  x: number;
+  y: number;
+  radius: number;
+}
+
 export interface Rectangle {
   x: number;
   y: number;
