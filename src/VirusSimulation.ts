@@ -43,12 +43,6 @@ export default class DungeonCrawler extends Game {
     particles.forEach((particle: Particle) => {
       scene.addChild(particle);
     });
-
-    // const id = setInterval(() => {
-    //   particles.forEach(particle => {
-    //     particle.excite();
-    //   });
-    // }, 200);
   }
 
   public update(deltaTime: number): void {
