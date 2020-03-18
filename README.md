@@ -1,4 +1,4 @@
-# Virus simulation
+# Infection simulation
 
 Simulate what happens when a virus starts spreading among a population.
 
