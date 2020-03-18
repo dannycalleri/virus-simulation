@@ -3,6 +3,7 @@ import Scene from './Scene';
 import Particle from './Particle';
 import Wall from './Wall';
 import { Circle } from './compiler/types';
+import { generateParticlesOneInfected } from './generation/particles';
 
 export default class DungeonCrawler extends Game {
   private particle?: Particle;
@@ -38,26 +39,16 @@ export default class DungeonCrawler extends Game {
       scene.addChild(wall);
     });
 
-    const particles: Particle[] = [];
-    const circles: Circle[] = new Array(50).fill(0).map((_, i) => {
-      return {
-        x: Math.floor(Math.random() * 300) * (Math.random() < 0.5 ? 1 : -1),
-        y: Math.floor(Math.random() * 150) * (Math.random() < 0.5 ? 1 : -1),
-        radius: 5,
-      };
-    });
-
-    circles.forEach((circle: Circle) => {
-      const particle: Particle = new Particle(circle.x, circle.y, circle.radius);
-      particles.push(particle);
+    const particles: Particle[] = generateParticlesOneInfected(100);
+    particles.forEach((particle: Particle) => {
       scene.addChild(particle);
     });
 
-    const id = setInterval(() => {
-      particles.forEach(particle => {
-        particle.excite();
-      });
-    }, 200);
+    // const id = setInterval(() => {
+    //   particles.forEach(particle => {
+    //     particle.excite();
+    //   });
+    // }, 200);
   }
 
   public update(deltaTime: number): void {
