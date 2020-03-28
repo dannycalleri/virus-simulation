@@ -3,6 +3,7 @@ import {
   Sprite,
 } from "pixi.js";
 import {world, engine, registerEntity} from "./Physics";
+import {IGameObject} from './compiler/types';
 import GameObject from "./GameObject";
 import {
   Bodies,
@@ -89,6 +90,15 @@ class Particle extends GameObject {
   public update(deltaTime: number): void {
     super.update(deltaTime);
     this.excite();
+  }
+
+  public onCollision(gameObject: IGameObject) {
+    if (gameObject instanceof Particle) {
+      if(this.infected || gameObject.infected) {
+        this.infected = true;
+        gameObject.infected = true;
+      }
+    }
   }
 }
 

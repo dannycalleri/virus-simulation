@@ -2,17 +2,18 @@ import Game from './Game';
 import Scene from './Scene';
 import Particle from './Particle';
 import Wall from './Wall';
-import { Circle } from './compiler/types';
 import { generateParticlesOneInfected } from './generation/particles';
 
-export default class DungeonCrawler extends Game {
-  private particle?: Particle;
-  private particle2?: Particle;
+export default class VirusSimulation extends Game {
+  private element: HTMLElement;
+  private time: number = 0.0;
+  private numberOfParticles:number;
+  private numberOfInfectedCurrentFrame:number = 0.0;
 
-  public constructor() {
-    super();
-    this.particle = undefined;
-    this.particle2 = undefined;
+  public constructor(width: number, height: number, element: HTMLElement, numberOfParticles: number = 100) {
+    super(width, height, element);
+    this.numberOfParticles = numberOfParticles;
+    this.element = element;
     this.setup();
   }
 
@@ -39,7 +40,7 @@ export default class DungeonCrawler extends Game {
       scene.addChild(wall);
     });
 
-    const particles: Particle[] = generateParticlesOneInfected(100);
+    const particles: Particle[] = generateParticlesOneInfected(this.numberOfParticles);
     particles.forEach((particle: Particle) => {
       scene.addChild(particle);
     });
@@ -47,5 +48,15 @@ export default class DungeonCrawler extends Game {
 
   public update(deltaTime: number): void {
     super.update(deltaTime);
+
+    this.time += deltaTime;
+    if (this.time > 1.0) {
+      this.time = 0;
+      const numberOfInfected = this.currentScene.gameObjects
+        .filter(g => g instanceof Particle && g.infected).length;
+      const event = new CustomEvent('histogramEvent', { detail: (numberOfInfected - this.numberOfInfectedCurrentFrame) });
+      this.element.dispatchEvent(event);
+      this.numberOfInfectedCurrentFrame = numberOfInfected;
+    }
   }
 }

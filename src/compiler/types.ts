@@ -41,6 +41,7 @@ export interface IGameObject {
   debugContainer: Container;
   addChild(gameObject: IGameObject): void;
   update(deltaTime: number): void;
+  onCollision(gameObject: IGameObject): void;
 }
 
 export interface Point {

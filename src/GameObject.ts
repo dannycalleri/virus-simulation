@@ -82,4 +82,7 @@ export default class GameObject implements IGameObject {
       g.update(deltaTime);
     });
   }
+
+  public onCollision(gameObject: IGameObject): void {
+  }
 }

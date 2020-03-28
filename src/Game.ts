@@ -8,9 +8,9 @@ export default class Game implements IGame {
   private app: PIXI.Application;
   scenes: Map<string, IScene> = new Map();
 
-  constructor() {
-    this.app = new PIXI.Application({width: 800, height: 400});
-    document.body.appendChild(this.app.view);
+  constructor(width: number, height: number, element: HTMLElement) {
+    this.app = new PIXI.Application({width, height});
+    element.appendChild(this.app.view);
   }
 
   public get width() {
