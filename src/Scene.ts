@@ -3,7 +3,11 @@ import {
   IGameObject, 
   Point
 } from "./compiler/types";
-import { Container } from "pixi.js";
+import { 
+  Container,
+  Graphics,
+  Sprite,
+} from "pixi.js";
 
 export default class Scene implements IScene {
   _x: number = 0;
@@ -13,6 +17,18 @@ export default class Scene implements IScene {
 
   constructor() {
     this.container = new Container();
+
+    let rectGraphic = new Graphics();
+    rectGraphic.lineStyle(4, 0xffffff, 1);
+    rectGraphic.beginFill(0xffffff, 1);
+    rectGraphic.drawRect(0, 0, 800, 400);
+    rectGraphic.endFill();
+
+    const texture = rectGraphic.generateCanvasTexture();
+    const basicSprite = new Sprite(texture);
+    basicSprite.anchor.x = 0.5;
+    basicSprite.anchor.y = 0.5;
+    this.container.addChild(basicSprite);
   }
 
   public get x() { return this._x; }

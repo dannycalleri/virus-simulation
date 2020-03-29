@@ -25,7 +25,7 @@ export default class GameObject implements IGameObject {
     rectGraphic.endFill();
     rectGraphic.x = 0;
     rectGraphic.y = 0;
-    this.debugContainer.addChild(rectGraphic);
+    // this.debugContainer.addChild(rectGraphic);
     this.container.addChild(this.debugContainer);
   }
 

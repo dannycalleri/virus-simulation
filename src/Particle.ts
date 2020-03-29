@@ -21,12 +21,12 @@ class Particle extends GameObject {
     this.y = y;
     this.isInfected = infected;
 
-    const color: number = infected ? 0xFF0000 : 0xFFFFFF;
+    const color: number = infected ? 0xFF0000 : 0x0;
 
     let rectGraphic = new Graphics();
     rectGraphic.lineStyle(4, color, 1);
-    rectGraphic.beginFill(0x0, 0);
-    rectGraphic.drawCircle(0, 0, radius);
+    rectGraphic.beginFill(0x0, 1);
+    rectGraphic.drawCircle(0, 0, radius / 3);
     rectGraphic.endFill();
 
     const texture = rectGraphic.generateCanvasTexture();
@@ -38,7 +38,7 @@ class Particle extends GameObject {
     // create also the infected sprite, but do not set it
     let infectedCircle = new Graphics();
     infectedCircle.lineStyle(4, 0xFF0000, 1);
-    infectedCircle.beginFill(0x0, 0);
+    infectedCircle.beginFill(0xFF0000, 1);
     infectedCircle.drawCircle(0, 0, radius);
     infectedCircle.endFill();
 
@@ -72,7 +72,7 @@ class Particle extends GameObject {
   }
 
   public excite() {
-    const forceMagnitude = 0.001 * this.rigidBody!.mass;
+    const forceMagnitude = 0.002 * this.rigidBody!.mass;
     Body.applyForce(this.rigidBody!, this.rigidBody!.position, {
       x: (forceMagnitude + Math.random() * forceMagnitude) * (Math.random() < 0.5 ? 1 : -1),
       y: (forceMagnitude + Math.random() * forceMagnitude) * (Math.random() < 0.5 ? 1 : -1),

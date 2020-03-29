@@ -15,7 +15,7 @@ function generateParticlesOneInfected(numberOfParticles: number): Particle[] {
   const infected: number = Math.floor(Math.random() * circles.length);
   return circles.map((circle, index) => {
     if(index === infected) {
-      return new Particle(circle.x, circle.y, circle.radius, true);
+      return new Particle(0, 0, circle.radius, true);
     }
     return new Particle(circle.x, circle.y, circle.radius);
   });

@@ -16,8 +16,8 @@ import {
       this.y = y;
   
       let rectGraphic = new Graphics();
-      rectGraphic.lineStyle(4, 0xFFFFFF, 1);
-      rectGraphic.beginFill(0x0, 0);
+      rectGraphic.lineStyle(4, 0x0, 1);
+      rectGraphic.beginFill(0x0, 1);
       rectGraphic.drawRect(0, 0, width, height);
       rectGraphic.endFill();
   

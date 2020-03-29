@@ -5,15 +5,15 @@ import Wall from './Wall';
 import { generateParticlesOneInfected } from './generation/particles';
 
 export default class VirusSimulation extends Game {
-  private element: HTMLElement;
+  private eventBusElement: HTMLElement;
   private time: number = 0.0;
   private numberOfParticles:number;
   private numberOfInfectedCurrentFrame:number = 0.0;
 
-  public constructor(width: number, height: number, element: HTMLElement, numberOfParticles: number = 100) {
+  public constructor(width: number, height: number, element: HTMLElement, eventBusElement: HTMLElement, numberOfParticles: number = 200) {
     super(width, height, element);
     this.numberOfParticles = numberOfParticles;
-    this.element = element;
+    this.eventBusElement = eventBusElement;
     this.setup();
   }
 
@@ -26,15 +26,16 @@ export default class VirusSimulation extends Game {
       y: -this.height / 2,
     };
 
+    const WALL_THICKNESS = 20;
     const walls: Wall[] = [
       // top
-      new Wall(0, -400/2+40/2, 800, 40),
+      new Wall(0, -this.height/2+WALL_THICKNESS/2, this.width, WALL_THICKNESS),
       // bottom
-      new Wall(0, 400/2-40/2, 800, 40),
+      new Wall(0, this.height/2-WALL_THICKNESS/2, this.width, WALL_THICKNESS),
       // left
-      new Wall(-800/2+40/2, 0, 40, 400),
+      new Wall(-this.width/2+WALL_THICKNESS/2, 0, WALL_THICKNESS, this.height),
       // right
-      new Wall(800/2-40/2, 0, 40, 400),
+      new Wall(this.width/2-WALL_THICKNESS/2, 0, WALL_THICKNESS, this.height),
     ];
     walls.forEach(wall => {
       scene.addChild(wall);
@@ -50,12 +51,12 @@ export default class VirusSimulation extends Game {
     super.update(deltaTime);
 
     this.time += deltaTime;
-    if (this.time > 1.0) {
+    if (this.time > 0.2) {
       this.time = 0;
       const numberOfInfected = this.currentScene.gameObjects
         .filter(g => g instanceof Particle && g.infected).length;
       const event = new CustomEvent('histogramEvent', { detail: (numberOfInfected - this.numberOfInfectedCurrentFrame) });
-      this.element.dispatchEvent(event);
+      this.eventBusElement.dispatchEvent(event);
       this.numberOfInfectedCurrentFrame = numberOfInfected;
     }
   }
