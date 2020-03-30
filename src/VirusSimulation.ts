@@ -51,11 +51,12 @@ export default class VirusSimulation extends Game {
     super.update(deltaTime);
 
     this.time += deltaTime;
-    if (this.time > 0.2) {
+    if (this.time > 0.05) {
       this.time = 0;
       const numberOfInfected = this.currentScene.gameObjects
         .filter(g => g instanceof Particle && g.infected).length;
-      const event = new CustomEvent('histogramEvent', { detail: (numberOfInfected - this.numberOfInfectedCurrentFrame) });
+      // const event = new CustomEvent('histogramEvent', { detail: (numberOfInfected - this.numberOfInfectedCurrentFrame) });
+      const event = new CustomEvent('histogramEvent', { detail: numberOfInfected });
       this.eventBusElement.dispatchEvent(event);
       this.numberOfInfectedCurrentFrame = numberOfInfected;
     }

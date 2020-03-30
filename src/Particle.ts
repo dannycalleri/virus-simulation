@@ -12,8 +12,10 @@ import {
 
 class Particle extends GameObject {
   private isInfected: boolean = false;
+  private hasBeenInfected: boolean = false;
   private basicSprite: PIXI.Sprite;
   private infectedSprite: PIXI.Sprite;
+  private infectedTime: number = 0;
 
   public constructor(x: number, y: number, radius: number, infected: boolean = false) {
     super();
@@ -26,7 +28,7 @@ class Particle extends GameObject {
     let rectGraphic = new Graphics();
     rectGraphic.lineStyle(4, color, 1);
     rectGraphic.beginFill(0x0, 1);
-    rectGraphic.drawCircle(0, 0, radius / 3);
+    rectGraphic.drawCircle(0, 0, radius);
     rectGraphic.endFill();
 
     const texture = rectGraphic.generateCanvasTexture();
@@ -72,7 +74,7 @@ class Particle extends GameObject {
   }
 
   public excite() {
-    const forceMagnitude = 0.002 * this.rigidBody!.mass;
+    const forceMagnitude = 0.0015 * this.rigidBody!.mass;
     Body.applyForce(this.rigidBody!, this.rigidBody!.position, {
       x: (forceMagnitude + Math.random() * forceMagnitude) * (Math.random() < 0.5 ? 1 : -1),
       y: (forceMagnitude + Math.random() * forceMagnitude) * (Math.random() < 0.5 ? 1 : -1),
@@ -90,11 +92,25 @@ class Particle extends GameObject {
   public update(deltaTime: number): void {
     super.update(deltaTime);
     this.excite();
+
+    if(this.isInfected) {
+      this.infectedTime += deltaTime;
+      if (this.infectedTime > 5.0) {
+        this.infected = false;
+        this.infectedTime = 0;
+      }
+
+      this.hasBeenInfected = true;
+    }
   }
 
   public onCollision(gameObject: IGameObject) {
     if (gameObject instanceof Particle) {
       if(this.infected || gameObject.infected) {
+        if(this.hasBeenInfected) {
+          return;
+        }
+
         this.infected = true;
         gameObject.infected = true;
       }
