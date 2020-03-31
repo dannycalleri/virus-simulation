@@ -87,14 +87,6 @@ class Particle extends GameObject {
     });
   }
 
-  public setVelocity(x: number, y: number) {
-    Body.applyForce(
-      this.rigidBody!, 
-      {x: this.x, y: this.y}, 
-      {x, y}
-    );
-  }
-
   public update(deltaTime: number): void {
     super.update(deltaTime);
     this.excite();
