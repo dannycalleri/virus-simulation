@@ -1,6 +1,12 @@
 import { Container } from "pixi.js";
 import { Body } from "matter-js";
 
+export interface InfectedData {
+  infected: number;
+  recovered: number;
+  healthy: number;
+}
+
 export interface Circle {
   x: number;
   y: number;

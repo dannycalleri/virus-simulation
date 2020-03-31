@@ -3,12 +3,12 @@ import Scene from './Scene';
 import Particle from './Particle';
 import Wall from './Wall';
 import { generateParticlesOneInfected } from './generation/particles';
+import { InfectedData } from './compiler/types';
 
 export default class VirusSimulation extends Game {
   private eventBusElement: HTMLElement;
   private time: number = 0.0;
   private numberOfParticles:number;
-  private numberOfInfectedCurrentFrame:number = 0.0;
 
   public constructor(width: number, height: number, element: HTMLElement, eventBusElement: HTMLElement, numberOfParticles: number = 200) {
     super(width, height, element);
@@ -53,12 +53,20 @@ export default class VirusSimulation extends Game {
     this.time += deltaTime;
     if (this.time > 0.05) {
       this.time = 0;
-      const numberOfInfected = this.currentScene.gameObjects
+
+      const infected = this.currentScene.gameObjects
         .filter(g => g instanceof Particle && g.infected).length;
-      // const event = new CustomEvent('histogramEvent', { detail: (numberOfInfected - this.numberOfInfectedCurrentFrame) });
-      const event = new CustomEvent('histogramEvent', { detail: numberOfInfected });
+      const recovered = this.currentScene.gameObjects
+        .filter(g => g instanceof Particle && g.hasParticlesBeenInfected).length;
+      
+      const event = new CustomEvent<InfectedData>('histogramEvent', {
+        detail: {
+          infected: infected,
+          recovered: recovered,
+          healthy: this.numberOfParticles - (infected + recovered),
+        }
+      });
       this.eventBusElement.dispatchEvent(event);
-      this.numberOfInfectedCurrentFrame = numberOfInfected;
     }
   }
 }

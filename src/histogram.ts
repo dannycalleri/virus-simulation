@@ -1,7 +1,11 @@
+import { InfectedData } from "./compiler/types";
+import configuration from "./configuration";
+
 export function createHistogram(element: HTMLElement, renderElement: HTMLElement) {
   const canvas = document.createElement('canvas');
   const context = canvas.getContext('2d')!;
 
+  const totalNumberOfParticles = 200;
   const width = 300;
   const height = 50;
   const dpr = window.devicePixelRatio;
@@ -14,30 +18,40 @@ export function createHistogram(element: HTMLElement, renderElement: HTMLElement
   context.fillStyle = "#000";
   context.fill();
 
-  const data: number[] = [];
   const step = 1;
   let xPos = 0;
 
-  function onHistogramEvent (e: any) {
-    const rate = e.detail;
-    data.push(rate);
-    update();
+  function onHistogramEvent (e: CustomEvent<InfectedData>) {
+    console.log(e.detail);
+    update(e.detail);
   }
 
-  function update() {
-    const dataPoint = data.pop() || 0;
-    const rate = dataPoint / 200;
-    const barHeight = (rate * height) * 3;
+  function update(dataPoint: InfectedData) {
+    const healthyBarRatio = dataPoint.healthy / totalNumberOfParticles;
+    const infectedBarRatio = dataPoint.infected / totalNumberOfParticles;
+    const recoveredBarRatio = dataPoint.recovered / totalNumberOfParticles;
+
+    const healthyBarHeight = healthyBarRatio * height;
     context.beginPath();
-    context.rect(xPos, height - barHeight, step, barHeight);
-    context.fillStyle = "#ffffff";
+    context.rect(xPos, 0, step, healthyBarHeight);
+    context.fillStyle = `#${(configuration.colors.healthy).toString(16)}`;
     context.fill();
-    xPos += step;
-    // window.requestAnimationFrame(update);
-  }
-  
-  // window.requestAnimationFrame(update);
 
-  element.addEventListener('histogramEvent', onHistogramEvent, false);
+    const recoveredBarHeight = recoveredBarRatio * height;
+    context.beginPath();
+    context.rect(xPos, healthyBarHeight, step, recoveredBarHeight);
+    context.fillStyle = `#${(configuration.colors.recovered).toString(16)}`;
+    context.fill();
+
+    const infectedBarHeight = infectedBarRatio * height;
+    context.beginPath();
+    context.rect(xPos, height - infectedBarHeight, step, infectedBarHeight);
+    context.fillStyle = `#${(configuration.colors.infected).toString(16)}`;
+    context.fill();
+
+    xPos += step;
+  }
+
+  element.addEventListener('histogramEvent', onHistogramEvent as EventListener, false);
   renderElement.appendChild(canvas);
 };

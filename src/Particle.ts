@@ -9,25 +9,24 @@ import {
   Bodies,
   Body,
 } from "matter-js";
+import configuration from "./configuration";
 
 class Particle extends GameObject {
   private isInfected: boolean = false;
   private hasBeenInfected: boolean = false;
   private basicSprite: PIXI.Sprite;
   private infectedSprite: PIXI.Sprite;
+  private recoveredSprite: PIXI.Sprite;
   private infectedTime: number = 0;
 
   public constructor(x: number, y: number, radius: number, infected: boolean = false) {
     super();
     this.x = x;
     this.y = y;
-    this.isInfected = infected;
-
-    const color: number = infected ? 0xFF0000 : 0x0;
 
     let rectGraphic = new Graphics();
-    rectGraphic.lineStyle(4, color, 1);
-    rectGraphic.beginFill(0x0, 1);
+    rectGraphic.lineStyle(4, configuration.colors.healthy, 1);
+    rectGraphic.beginFill(configuration.colors.healthy, 1);
     rectGraphic.drawCircle(0, 0, radius);
     rectGraphic.endFill();
 
@@ -39,8 +38,8 @@ class Particle extends GameObject {
 
     // create also the infected sprite, but do not set it
     let infectedCircle = new Graphics();
-    infectedCircle.lineStyle(4, 0xFF0000, 1);
-    infectedCircle.beginFill(0xFF0000, 1);
+    infectedCircle.lineStyle(4, configuration.colors.infected, 1);
+    infectedCircle.beginFill(configuration.colors.infected, 1);
     infectedCircle.drawCircle(0, 0, radius);
     infectedCircle.endFill();
 
@@ -48,6 +47,18 @@ class Particle extends GameObject {
     this.infectedSprite = new Sprite(infectedTexture);
     this.infectedSprite.anchor.x = 0.5;
     this.infectedSprite.anchor.y = 0.5;
+
+    // create also the infected sprite, but do not set it
+    let recoveredCircle = new Graphics();
+    recoveredCircle.lineStyle(4, configuration.colors.recovered, 1);
+    recoveredCircle.beginFill(configuration.colors.recovered, 1);
+    recoveredCircle.drawCircle(0, 0, radius);
+    recoveredCircle.endFill();
+
+    const recoveredTexture = recoveredCircle.generateCanvasTexture();
+    this.recoveredSprite = new Sprite(recoveredTexture);
+    this.recoveredSprite.anchor.x = 0.5;
+    this.recoveredSprite.anchor.y = 0.5;
 
     const body = Bodies.circle(x, y, radius, {
       density: 0.0005,
@@ -58,22 +69,23 @@ class Particle extends GameObject {
     this.rigidBody = body;
     registerEntity(body, this);
     world.add(engine.world, body);
+    this.infected = infected;
   }
 
   public get hasParticlesBeenInfected() { return this.hasBeenInfected; }
   public get infected() { return this.isInfected; }
   public set infected(isInfected: boolean) {
-    if (isInfected) {
-      if(this.hasBeenInfected) {
-        return;
-      }
+    if(!this.infected && this.hasBeenInfected) {
+      return;
+    }
 
+    if (isInfected) {
       this.container.removeChild(this.basicSprite);
       this.container.addChild(this.infectedSprite);
       this.hasBeenInfected = true;
-    } else {
+    } else if(this.hasBeenInfected) {
       this.container.removeChild(this.infectedSprite);
-      this.container.addChild(this.basicSprite);
+      this.container.addChild(this.recoveredSprite);
     }
 
     this.isInfected = isInfected;
