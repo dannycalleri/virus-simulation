@@ -22,7 +22,6 @@ export function createHistogram(element: HTMLElement, renderElement: HTMLElement
   let xPos = 0;
 
   function onHistogramEvent (e: CustomEvent<InfectedData>) {
-    console.log(e.detail);
     update(e.detail);
   }
 
