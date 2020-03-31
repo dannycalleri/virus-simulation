@@ -1,4 +1,4 @@
-# Virus spread simulation
+# Virus simulation
 
 During the global quarantine caused by COVID-19, I was literally blown away by [this article](https://www.washingtonpost.com/graphics/2020/world/corona-simulator/) by Harry Stevens in the Washington Post.
 
