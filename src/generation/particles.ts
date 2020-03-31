@@ -3,11 +3,11 @@ import {
   Circle 
 } from "../compiler/types";
 
-function generateParticlesOneInfected(numberOfParticles: number): Particle[] {
+function generateParticlesOneInfected(numberOfParticles: number, width: number, height: number): Particle[] {
   const circles: Circle[] = new Array(numberOfParticles).fill(0).map((_, i) => {
     return {
-      x: Math.floor(Math.random() * 300) * (Math.random() < 0.5 ? 1 : -1),
-      y: Math.floor(Math.random() * 150) * (Math.random() < 0.5 ? 1 : -1),
+      x: Math.floor(Math.random() * (width / 3)) * (Math.random() < 0.5 ? 1 : -1),
+      y: Math.floor(Math.random() * (height / 3)) * (Math.random() < 0.5 ? 1 : -1),
       radius: 5,
     };
   });

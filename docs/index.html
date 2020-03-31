@@ -1,9 +1,45 @@
 <!doctype html>
 <html>
   <head>
-    <title>Infection Simulation</title>
+    <title>virus simulation</title>
+    <style>
+      html {
+        font-family: 'Courier New', Courier, monospace;
+      }
+
+      header {
+        margin: 20px 0;
+      }
+
+      h1 {
+        font-weight: bold;
+        text-decoration: underline;
+      }
+
+      a {
+        color: black;
+      }
+
+      ul {
+        list-style: none;
+        padding: 0;
+      }
+
+      ul span {
+        display: inline-block;
+        width: 18px;
+        height: 18px;
+        position: relative;
+        top: 4px;
+        margin-right: 5px;
+      }
+    </style>
   </head>
   <body>
+    <header>
+      <h1>virus spreading simulation</h1>
+      <small>code by <a href="https://github.com/dannycalleri">Danny Calleri</a> - inspired by <a href="https://www.washingtonpost.com/graphics/2020/world/corona-simulator/">Washington Post</a></small>
+    </header>
     <div id="first">
       <div class="histogram"></div>
       <div class="simulation"></div>

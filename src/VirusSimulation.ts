@@ -41,7 +41,7 @@ export default class VirusSimulation extends Game {
       scene.addChild(wall);
     });
 
-    const particles: Particle[] = generateParticlesOneInfected(this.numberOfParticles);
+    const particles: Particle[] = generateParticlesOneInfected(this.numberOfParticles, this.width, this.height);
     particles.forEach((particle: Particle) => {
       scene.addChild(particle);
     });
