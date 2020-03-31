@@ -60,11 +60,17 @@ class Particle extends GameObject {
     world.add(engine.world, body);
   }
 
+  public get hasParticlesBeenInfected() { return this.hasBeenInfected; }
   public get infected() { return this.isInfected; }
   public set infected(isInfected: boolean) {
     if (isInfected) {
+      if(this.hasBeenInfected) {
+        return;
+      }
+
       this.container.removeChild(this.basicSprite);
       this.container.addChild(this.infectedSprite);
+      this.hasBeenInfected = true;
     } else {
       this.container.removeChild(this.infectedSprite);
       this.container.addChild(this.basicSprite);
@@ -99,18 +105,12 @@ class Particle extends GameObject {
         this.infected = false;
         this.infectedTime = 0;
       }
-
-      this.hasBeenInfected = true;
     }
   }
 
   public onCollision(gameObject: IGameObject) {
     if (gameObject instanceof Particle) {
       if(this.infected || gameObject.infected) {
-        if(this.hasBeenInfected) {
-          return;
-        }
-
         this.infected = true;
         gameObject.infected = true;
       }
