@@ -39,7 +39,7 @@ export function createHistogram(element: HTMLElement, renderElement: HTMLElement
 
     const recoveredBarHeight = recoveredBarRatio * height;
     context.beginPath();
-    context.rect(xPos, healthyBarHeight, step, recoveredBarHeight);
+    context.rect(xPos, 0, step, recoveredBarHeight);
     context.fillStyle = `#${(configuration.colors.recovered).toString(16)}`;
     context.fill();
 

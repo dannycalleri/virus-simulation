@@ -57,13 +57,13 @@ export default class VirusSimulation extends Game {
       const infected = this.currentScene.gameObjects
         .filter(g => g instanceof Particle && g.infected).length;
       const recovered = this.currentScene.gameObjects
-        .filter(g => g instanceof Particle && g.hasParticlesBeenInfected).length;
+        .filter(g => g instanceof Particle && !g.infected && g.hasParticlesBeenInfected).length;
       
       const event = new CustomEvent<InfectedData>('histogramEvent', {
         detail: {
           infected: infected,
           recovered: recovered,
-          healthy: this.numberOfParticles - (infected + recovered),
+          healthy: this.numberOfParticles - infected,
         }
       });
       this.eventBusElement.dispatchEvent(event);

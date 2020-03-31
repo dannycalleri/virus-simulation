@@ -1,6 +1,12 @@
 # Infection simulation
 
-Simulate what happens when a virus starts spreading among a population.
+During the global quarantine caused by COVID-19, I was literally blown away by [this article](https://www.washingtonpost.com/graphics/2020/world/corona-simulator/) by Harry Stevens in the Washington Post.
+
+Here I'm trying to reproduce what he did and simulate what happens when a virus starts spreading among a population.
+
+I used some technology that I wrote for games in the past, in particular the ones coming from my [Dungeon Crawler demo](https://github.com/dannycalleri/dungeon-crawler), so it was quite easy to rebuild everything.
+
+Hope you like it.
 
 ## Known Issues
 
